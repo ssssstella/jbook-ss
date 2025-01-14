@@ -1,0 +1,31 @@
+{
+  "name": "@jbook-ss/local-api",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "start": "tsc --watch --preserveWatchOutput",
+    "prepublishOnly": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "publishConfig": {
+    "access": "public"
+  },
+  "description": "",
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "http-proxy-middleware": "^3.0.3",
+    "@jbook-ss/local-client": "^0.1.0"
+  }
+}
