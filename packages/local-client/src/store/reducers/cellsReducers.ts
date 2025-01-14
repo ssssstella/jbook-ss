@@ -12,12 +12,55 @@ interface CellsState {
   };
 }
 
+const randomId = () => {
+  return Math.random().toString(36).substring(2, 7);
+}
+
+const initialContent = [
+`# JBook
+
+This is an interactive Javascript coding environment. You can write Javascript, see it executed, and write comprehensive documentation using markdown.
+
+- Click any cell (including this one) to edit it
+- The code in each code editor cell is all joined together into one file. If you define a variable in cell #1, you can refer to it in any following cell!
+- You can show any React component, string, number, or anything else by calling the \`show\` function. This is a built-in function in this environment. Call show multiple times to show multiple values
+- Re-order or delete cells using the buttons on the top right of the cell
+- Add new cells by hovering on the divider between each cell
+All of your changes get saved to the file you opened JBook with. So if you ran \`npx jbook serve test.js\`, all of the text and code you write will be saved to the \`test.js\` file.  
+`, 
+
+`import {useState} from 'react';
+  const Counter = () => {
+    const [count, setCount] = useState(0);
+    return (
+      <div>
+        <button onClick={() => setCount(count + 1)}>Click</button>
+        <h3>Count: {count}</h3>
+      </div>
+    )
+  };
+
+// Display any variable or React Component by calling 'show'
+show(<Counter />);
+`
+];
+const initialOrder = [randomId(), randomId()];
+const initialData = Object.fromEntries(initialOrder.map((key, index): [key:string, content:Cell] => {
+  return [key, {
+    id: key,
+    type: index % 2 === 0 ? 'text' : 'code',
+    content: initialContent[index]
+  }];
+}));
+
 const initialState: CellsState = {
   loading: false,
   error: null,
-  order: [],
-  data: {},
+  order: initialOrder,
+  data: initialData,
 };
+
+
 
 const reducer = produce((state: CellsState = initialState, action: Action) => {
   switch (action.type) {
@@ -79,8 +122,6 @@ const reducer = produce((state: CellsState = initialState, action: Action) => {
 }, initialState);
 
 
-const randomId = () => {
-  return Math.random().toString(36).substring(2, 7);
-}
+
 
 export default reducer;
