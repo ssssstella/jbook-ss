@@ -39,7 +39,6 @@ const html = `
 `;
 
 const Preview: React.FC<PreviewProps> = ({ code, err }) => {
-  console.log(err);
   
   const iframe = useRef<any>(null);
 

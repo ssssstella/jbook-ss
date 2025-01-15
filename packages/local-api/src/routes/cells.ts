@@ -12,6 +12,10 @@ interface LocalApiError {
   code: string;
 }
 
+const isLocalApiError = (err: any): err is LocalApiError => {
+  return typeof err.code === 'string';
+};
+
 const randomId = () => {
   return Math.random().toString(36).substring(2, 7);
 }
@@ -45,7 +49,6 @@ const defaultContent = [
   show(<Counter />);
   `
   ];
-
 const defaultCells = defaultIds.map((key, index) => {
   return {
     id: key,
@@ -53,6 +56,7 @@ const defaultCells = defaultIds.map((key, index) => {
     content: defaultContent[index]
   };
 });
+const defaultData = {data: defaultCells};
 
 export const createCellsRouter = (filename: string, dir: string) => {
   const router = express.Router();
@@ -61,19 +65,14 @@ export const createCellsRouter = (filename: string, dir: string) => {
   const fullPath = path.join(dir, filename);
 
   router.get('/cells', async (req, res) => {
-    const isLocalApiError = (err: any): err is LocalApiError => {
-      return typeof err.code === 'string';
-    };
-
     try {
       const result = await fs.readFile(fullPath, { encoding: 'utf-8' });
-      res.send(JSON.parse(result));
-
+      res.send(JSON.parse(result).length === 0 ? defaultCells : JSON.parse(result));
     } catch (err) {
       if (isLocalApiError(err)) {
         if (err.code === 'ENOENT') {
-          await fs.writeFile(fullPath, JSON.stringify(defaultCells), 'utf-8');
-          res.send(defaultCells);
+          await fs.writeFile(fullPath, '[]', 'utf-8');
+          res.send([]);
         }
       } else {
         throw err;
