@@ -32,7 +32,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
     };
 
     //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cumulativeCode, cell.id, createBundle]);
+  }, [cumulativeCode, cell.id]);
 
   return (
     <Resizable direction="vertical">

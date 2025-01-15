@@ -10,6 +10,7 @@ interface CellItemProps {
 }
 
 const CellItem: React.FC<CellItemProps> = ({ cell }) => {
+ 
   let child: JSX.Element;
   if (cell.type === 'code') {
     child = (
