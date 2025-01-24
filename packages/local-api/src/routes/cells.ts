@@ -46,7 +46,7 @@ const defaultContent = [
     };
   
   // Display any variable or React Component by calling 'show'
-  show(<Counter />);
+  show(\<Counter \/\>);
   `
   ];
 const defaultCells = defaultIds.map((key, index) => {
@@ -56,7 +56,7 @@ const defaultCells = defaultIds.map((key, index) => {
     content: defaultContent[index]
   };
 });
-const defaultData = {data: defaultCells};
+
 
 export const createCellsRouter = (filename: string, dir: string) => {
   const router = express.Router();
@@ -71,8 +71,8 @@ export const createCellsRouter = (filename: string, dir: string) => {
     } catch (err) {
       if (isLocalApiError(err)) {
         if (err.code === 'ENOENT') {
-          await fs.writeFile(fullPath, '[]', 'utf-8');
-          res.send([]);
+          await fs.writeFile(fullPath, JSON.stringify(defaultCells), 'utf-8');
+          res.send(defaultCells);
         }
       } else {
         throw err;
